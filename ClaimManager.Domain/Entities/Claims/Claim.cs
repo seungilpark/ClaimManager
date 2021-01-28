@@ -7,8 +7,8 @@ namespace ClaimManager.Domain.Entities.Claims
     public class Claim : AuditableEntity
     {
         public string Title { get; set; }
-        public int Requester { get; set; }
-        public int Approver { get; set; }
+        public string RequesterId { get; set; }
+        public string ApproverId { get; set; }
         public DateTime SubmitDate { get; set; }
         public DateTime ApprovalDate { get; set; }
         public DateTime ProcessedDate { get; set; }
