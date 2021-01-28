@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>ClaimManager.Api</name>
+    </assembly>
+    <members>
+        <member name="M:ClaimManager.Api.Controllers.IdentityController.GetTokenAsync(ClaimManager.Application.DTOs.Identity.TokenRequest)">
+            <summary>
+            Generates a JSON Web Token for a valid combination of emailId and password.
+            </summary>
+            <param name="tokenRequest"></param>
+            <returns></returns>
+        </member>
+    </members>
+</doc>
