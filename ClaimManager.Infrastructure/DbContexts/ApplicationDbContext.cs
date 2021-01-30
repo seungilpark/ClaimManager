@@ -8,6 +8,7 @@ using System.Data;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using ClaimManager.Domain.Entities.Claims;
 
 namespace ClaimManager.Infrastructure.DbContexts
 {
@@ -23,6 +24,10 @@ namespace ClaimManager.Infrastructure.DbContexts
         }
 
         public DbSet<Product> Products { get; set; }
+        public DbSet<Claim> Claims { get; set; }
+        public DbSet<ClaimItem> ClaimItems { get; set; }
+        public DbSet<Currency> Currencies { get; set; }
+        public DbSet<ClaimCategory> ClaimCategories { get; set; }
 
         public IDbConnection Connection => Database.GetDbConnection();
 
