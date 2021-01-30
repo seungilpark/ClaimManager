@@ -15,7 +15,7 @@ namespace ClaimManager.Infrastructure
             context.Database.EnsureCreated();
 
             // Look for any students.
-            if (!context.Claims.Any())
+            if (context.Claims.Any())
             {
                 return;   // DB has been seeded
             }
@@ -72,8 +72,8 @@ namespace ClaimManager.Infrastructure
 
             var claims = new Claim[]
             {
-                new Claim { ClaimItems=items1, Title="test claim title 1", RequesterId="", ApproverId="", SubmitDate= new DateTime(2021-01-24), RequesterComments="Test Comment 1", },
-                new Claim { ClaimItems=items2, Title="test claim title 2", RequesterId="", ApproverId="", SubmitDate= new DateTime(2021-01-20), RequesterComments="Test Comment 2"}
+                new Claim { ClaimItems=items1, Title="test claim title 1", RequesterId="c2f9ac6d-0910-46c5-ae15-cda29f3eb8f4", ApproverId="4cf0b8b2-c883-44ac-a52f-1fca2abdba8a", SubmitDate= new DateTime(2021-01-24), RequesterComments="Test Comment 1", },
+                new Claim { ClaimItems=items2, Title="test claim title 2", RequesterId="c2f9ac6d-0910-46c5-ae15-cda29f3eb8f4", ApproverId="4cf0b8b2-c883-44ac-a52f-1fca2abdba8a", SubmitDate= new DateTime(2021-01-20), RequesterComments="Test Comment 2"}
             };
 
             foreach (Claim c in claims)

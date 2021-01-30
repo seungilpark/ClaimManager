@@ -7,6 +7,8 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Threading.Tasks;
+using ClaimManager.Infrastructure.DbContexts;
+using ClaimManager.Infrastructure;
 
 namespace ClaimManager.Api
 {
@@ -31,6 +33,8 @@ namespace ClaimManager.Api
                     await Infrastructure.Identity.Seeds.DefaultBasicUser.SeedAsync(userManager, roleManager);
                     logger.LogInformation("Finished Seeding Default Data");
                     logger.LogInformation("Application Starting");
+                    var context = services.GetRequiredService<ApplicationDbContext>();
+                    DbInitializer.Initialize(context);
                 }
                 catch (Exception ex)
                 {
