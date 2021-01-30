@@ -21,4 +21,12 @@
   <ItemGroup>
     <ProjectReference Include="..\ClaimManager.Domain\ClaimManager.Domain.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Features\Claims\Commands\Create\" />
+    <Folder Include="Features\Claims\Commands\Delete\" />
+    <Folder Include="Features\Claims\Commands\Update\" />
+    <Folder Include="Features\Claims\Queries\GetAll\" />
+    <Folder Include="Features\Claims\Queries\GetAllCached\" />
+    <Folder Include="Features\Claims\Queries\GetById\" />
+  </ItemGroup>
 </Project>
