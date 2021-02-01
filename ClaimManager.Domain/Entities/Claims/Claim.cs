@@ -17,7 +17,7 @@ namespace ClaimManager.Domain.Entities.Claims
         public string RequesterComments { get; set; }
         public string ApproverComments { get; set; }
         public string FinanceComments { get; set; }
-        public ICollection<ClaimItem> ClaimItems { get; set; }
+        public List<ClaimItem> ClaimItems { get; set; }
 
     }
 }

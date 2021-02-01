@@ -31,10 +31,10 @@ namespace ClaimManager.Api
                     await Infrastructure.Identity.Seeds.DefaultRoles.SeedAsync(userManager, roleManager);
                     await Infrastructure.Identity.Seeds.DefaultSuperAdminUser.SeedAsync(userManager, roleManager);
                     await Infrastructure.Identity.Seeds.DefaultBasicUser.SeedAsync(userManager, roleManager);
-                    logger.LogInformation("Finished Seeding Default Data");
-                    logger.LogInformation("Application Starting");
                     var context = services.GetRequiredService<ApplicationDbContext>();
                     DbInitializer.Initialize(context);
+                    logger.LogInformation("Finished Seeding Default Data");
+                    logger.LogInformation("Application Starting");
                 }
                 catch (Exception ex)
                 {
