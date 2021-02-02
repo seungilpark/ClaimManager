@@ -33,10 +33,10 @@ namespace ClaimManager.Api
             services.AddControllers();
             services.AddMvc(o =>
             {
-                var policy = new AuthorizationPolicyBuilder()
-                    .RequireAuthenticatedUser()
-                    .Build();
-                o.Filters.Add(new AuthorizeFilter(policy));
+                //var policy = new AuthorizationPolicyBuilder()
+                    //.RequireAuthenticatedUser()
+                    //.Build();
+                //o.Filters.Add(new AuthorizeFilter(policy));
             });
         }
 

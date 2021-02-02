@@ -1,10 +1,13 @@
-﻿using AspNetCoreHero.Abstractions.Domain;
+﻿using ClaimManager.Domain.Entities.Claims;
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace ClaimManager.Domain.Entities.Claims
+namespace ClaimManager.Application.Features.Claims.Queries.GetAllPaged
 {
-    public class Claim : AuditableEntity
+    public class GetAllClaimsResponse
     {
         public string Title { get; set; }
         public string RequesterId { get; set; }
@@ -13,11 +16,11 @@ namespace ClaimManager.Domain.Entities.Claims
         public DateTime ApprovalDate { get; set; }
         public DateTime ProcessedDate { get; set; }
         public decimal TotalAmount { get; set; }
-        public ClaimStatus Status { get; set; } = ClaimStatus.Submitted;
+        public ClaimStatus Status { get; set; } 
         public string RequesterComments { get; set; }
         public string ApproverComments { get; set; }
         public string FinanceComments { get; set; }
-        public List<ClaimItem> ClaimItems { get; set; }
+        public ICollection<ClaimItem> ClaimItems { get; set; }
 
     }
 }
