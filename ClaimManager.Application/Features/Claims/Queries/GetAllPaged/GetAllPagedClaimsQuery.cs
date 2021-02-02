@@ -13,27 +13,31 @@ using System.Threading.Tasks;
 
 namespace ClaimManager.Application.Features.Claims.Queries.GetAllPaged
 {
-    public class GetAllClaimsQuery : IRequest<PaginatedResult<GetAllClaimsResponse>>
+    public class GetAllPagedClaimsQuery : IRequest<PaginatedResult<GetAllClaimsResponse>>
     {
         public int PageNumber { get; set; }
         public int PageSize { get; set; }
-        public GetAllClaimsQuery(int pageNumber, int pageSize)
+        public GetAllPagedClaimsQuery(int pageNumber, int pageSize)
         {
             PageNumber = pageNumber;
             PageSize = pageSize;
         }
+
+        public GetAllPagedClaimsQuery()
+        {
+        }
     }
 
-    public class GetAllClaimsQueryHandler : IRequestHandler<GetAllClaimsQuery, PaginatedResult<GetAllClaimsResponse>>
+    public class GetAllPagedClaimsQueryHandler : IRequestHandler<GetAllPagedClaimsQuery, PaginatedResult<GetAllClaimsResponse>>
     {
 
         private readonly IClaimsRepository _repository;
-        public GetAllClaimsQueryHandler(IClaimsRepository repository)
+        public GetAllPagedClaimsQueryHandler(IClaimsRepository repository)
         {
             _repository = repository;
         }
 
-        public async Task<PaginatedResult<GetAllClaimsResponse>> Handle(GetAllClaimsQuery request, CancellationToken cancellationToken)
+        public async Task<PaginatedResult<GetAllClaimsResponse>> Handle(GetAllPagedClaimsQuery request, CancellationToken cancellationToken)
         {
 
             Expression<Func<Claim, GetAllClaimsResponse>> expression = e => new GetAllClaimsResponse
