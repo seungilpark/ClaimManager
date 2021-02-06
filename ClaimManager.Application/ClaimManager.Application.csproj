@@ -21,4 +21,7 @@
   <ItemGroup>
     <ProjectReference Include="..\ClaimManager.Domain\ClaimManager.Domain.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Features\Claims\Queries\GetAllCached\" />
+  </ItemGroup>
 </Project>

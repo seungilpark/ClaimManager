@@ -8,6 +8,8 @@ using AutoMapper;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
+using ClaimManager.Application.Interfaces.Repositories.Claims;
+using ClaimManager.Infrastructure.Repositories.Claims;
 
 namespace ClaimManager.Infrastructure.Extensions
 {
@@ -26,6 +28,8 @@ namespace ClaimManager.Infrastructure.Extensions
             services.AddTransient(typeof(IRepositoryAsync<>), typeof(RepositoryAsync<>));
             services.AddTransient<IProductRepository, ProductRepository>();
             services.AddTransient<IProductCacheRepository, ProductCacheRepository>();
+            services.AddTransient<IClaimsRepository, ClaimsRepository>();
+            //services.AddTransient<, ProductCacheRepository>();
             services.AddTransient<IBrandRepository, BrandRepository>();
             services.AddTransient<IBrandCacheRepository, BrandCacheRepository>();
             services.AddTransient<ILogRepository, LogRepository>();
