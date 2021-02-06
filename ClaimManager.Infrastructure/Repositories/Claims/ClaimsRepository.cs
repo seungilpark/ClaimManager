@@ -22,10 +22,6 @@ namespace ClaimManager.Infrastructure.Repositories.Claims
         }
         public IQueryable<Claim> Claims => _repository.Entities;
 
-        public Task Approve(int claimId)
-        {
-            throw new NotImplementedException();
-        }
 
         public async Task DeleteAsync(Claim claim)
         {
@@ -36,12 +32,20 @@ namespace ClaimManager.Infrastructure.Repositories.Claims
 
         public async Task<Claim> GetByIdAsync(int claimId)
         {
-            return await _repository.Entities.Where(c => c.Id == claimId).FirstOrDefaultAsync();
+            var claim = await Claims
+                .Where(c => c.Id == claimId)
+                .Include(c => c.ClaimItems)
+                    .ThenInclude(ci => ci.Currency)
+                .Include(c => c.ClaimItems)
+                    .ThenInclude(ci => ci.ClaimCategory)
+                .FirstOrDefaultAsync();
+
+            return claim;
         }
 
         public async Task<List<Claim>> GetListAsync()
         {
-            return await _repository.Entities.ToListAsync();
+            return await Claims.Include(c => c.ClaimItems).AsNoTracking().ToListAsync();
         }
 
         public async Task<int> InsertAsync(Claim claim)
@@ -49,6 +53,10 @@ namespace ClaimManager.Infrastructure.Repositories.Claims
             await _repository.AddAsync(claim);
             await _distributedCache.RemoveAsync(CacheKeys.ClaimCacheKeys.ListKey);
             return claim.Id;
+        }
+        public Task Approve(int claimId)
+        {
+            throw new NotImplementedException();
         }
 
         public Task Query(int claimId)

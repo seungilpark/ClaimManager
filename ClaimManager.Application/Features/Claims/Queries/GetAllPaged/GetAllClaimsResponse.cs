@@ -20,7 +20,7 @@ namespace ClaimManager.Application.Features.Claims.Queries.GetAllPaged
         public string RequesterComments { get; set; }
         public string ApproverComments { get; set; }
         public string FinanceComments { get; set; }
-        public ICollection<ClaimItem> ClaimItems { get; set; }
+        public int ItemsCount { get; set; } 
 
     }
 }

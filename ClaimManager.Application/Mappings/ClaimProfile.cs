@@ -1,4 +1,7 @@
 ﻿using AutoMapper;
+using ClaimManager.Application.Features.Claims.Commands.Create;
+using ClaimManager.Application.Features.Claims.Queries.Dtos;
+using ClaimManager.Domain.Entities.Claims;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,8 +14,7 @@ namespace ClaimManager.Application.Mappings
     {
         public ClaimProfile()
         {
-            //CreateMap<CreateProductCommand, Product>().ReverseMap();
-            //CreateMap<GetProductByIdResponse, Product>().ReverseMap();
+            CreateMap<CreateClaimCommand, Claim>().ReverseMap();
             //CreateMap<GetAllProductsCachedResponse, Product>().ReverseMap();
             //CreateMap<GetAllProductsResponse, Product>().ReverseMap();
         }

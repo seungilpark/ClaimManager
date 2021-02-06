@@ -1,4 +1,7 @@
 ﻿using ClaimManager.API.Controllers;
+using ClaimManager.Application.Features.Claims.Commands.Create;
+using ClaimManager.Application.Features.Claims.Commands.Delete;
+using ClaimManager.Application.Features.Claims.Commands.Update;
 using ClaimManager.Application.Features.Claims.Queries.GetAllPaged;
 using ClaimManager.Application.Features.Claims.Queries.GetById;
 using Microsoft.AspNetCore.Mvc;
@@ -28,6 +31,28 @@ namespace ClaimManager.Api.Controllers.v1.Claims
         {
             var claim = await _mediator.Send(new GetClaimByIdQuery() { Id = id });
             return Ok(claim);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Post(CreateClaimCommand command)
+        {
+            return Ok(await _mediator.Send(command));
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(int id)
+        {
+            return Ok(await _mediator.Send(new DeleteClaimCommand { Id = id }));
+        }
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Put(int id, UpdateClaimCommand command)
+        {
+            if (id != command.Id)
+            {
+                return BadRequest();
+            }
+            return Ok(await _mediator.Send(command));
         }
     }
 }

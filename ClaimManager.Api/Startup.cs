@@ -51,8 +51,6 @@ namespace ClaimManager.Api
             app.UseHttpsRedirection();
             app.UseMiddleware<ErrorHandlerMiddleware>();
             app.UseRouting();
-
-            app.UseRouting();
             app.UseAuthentication();
             app.UseAuthorization();
 
