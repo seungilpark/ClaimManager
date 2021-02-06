@@ -53,7 +53,7 @@ namespace ClaimManager.Application.Features.Claims.Queries.GetAllPaged
                 RequesterComments = e.RequesterComments,
                 ApproverComments = e.ApproverComments,
                 FinanceComments = e.FinanceComments,
-                ClaimItems = e.ClaimItems, 
+                ItemsCount = e.ClaimItems.Count(),
             };
 
             var paginatedList = await _repository.Claims

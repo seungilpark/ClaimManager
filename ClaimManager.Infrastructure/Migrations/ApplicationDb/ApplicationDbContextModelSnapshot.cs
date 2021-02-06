@@ -217,14 +217,17 @@ namespace ClaimManager.Infrastructure.Migrations.ApplicationDb
                     b.Property<decimal>("Amount")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<int>("CategoryId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("ClaimCategoryId")
+                    b.Property<int>("ClaimCategoryId")
                         .HasColumnType("int");
 
                     b.Property<int>("ClaimId")
                         .HasColumnType("int");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
 
                     b.Property<int>("CurrencyId")
                         .HasColumnType("int");
@@ -238,6 +241,12 @@ namespace ClaimManager.Infrastructure.Migrations.ApplicationDb
                     b.Property<string>("Image")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("LastModifiedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("LastModifiedOn")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("Payee")
                         .HasColumnType("nvarchar(max)");
 
@@ -250,8 +259,7 @@ namespace ClaimManager.Infrastructure.Migrations.ApplicationDb
 
                     b.HasIndex("ClaimId");
 
-                    b.HasIndex("CurrencyId")
-                        .IsUnique();
+                    b.HasIndex("CurrencyId");
 
                     b.ToTable("ClaimItems");
                 });
@@ -289,7 +297,9 @@ namespace ClaimManager.Infrastructure.Migrations.ApplicationDb
                 {
                     b.HasOne("ClaimManager.Domain.Entities.Claims.ClaimCategory", "ClaimCategory")
                         .WithMany("ClaimItems")
-                        .HasForeignKey("ClaimCategoryId");
+                        .HasForeignKey("ClaimCategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("ClaimManager.Domain.Entities.Claims.Claim", "Claim")
                         .WithMany("ClaimItems")
@@ -298,8 +308,8 @@ namespace ClaimManager.Infrastructure.Migrations.ApplicationDb
                         .IsRequired();
 
                     b.HasOne("ClaimManager.Domain.Entities.Claims.Currency", "Currency")
-                        .WithOne("ClaimItem")
-                        .HasForeignKey("ClaimManager.Domain.Entities.Claims.ClaimItem", "CurrencyId")
+                        .WithMany("ClaimItems")
+                        .HasForeignKey("CurrencyId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -322,7 +332,7 @@ namespace ClaimManager.Infrastructure.Migrations.ApplicationDb
 
             modelBuilder.Entity("ClaimManager.Domain.Entities.Claims.Currency", b =>
                 {
-                    b.Navigation("ClaimItem");
+                    b.Navigation("ClaimItems");
                 });
 #pragma warning restore 612, 618
         }
