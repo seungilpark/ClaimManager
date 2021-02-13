@@ -1,0 +1,192 @@
+﻿@page "/create-claim"
+
+@using System.Text.RegularExpressions
+@using System.ComponentModel.DataAnnotations
+@inject IDialogService DialogService
+
+
+<MudContainer Class="mt-5" MaxWidth="MaxWidth.Large">
+    <MudGrid Class="mt-5">
+        <MudText Typo="Typo.h2">Create Claim</MudText>
+    </MudGrid>
+    <MudCard Class="mt-5">
+        <MudCardContent>
+            <MudText Class="my-3" Typo="Typo.h5">Claim Info</MudText>
+            <MudForm Class="my-3"@ref="form" @bind-IsValid="@success" @bind-Errors="@errors">
+                <MudTextField Class="my-3"T="string" Label="Title" Required="true" RequiredError="User name is required!" />
+                <MudSelect Class="my-3"T="string" Label="Approver">
+                    <MudSelectItem Value="@("Approver 1")">Approver 1</MudSelectItem>
+                    <MudSelectItem Value="@("Approver 2")">Approver 2</MudSelectItem>
+                    <MudSelectItem Value="@("Approver 3")">Approver 3</MudSelectItem>
+                    <MudSelectItem Value="@("Approver 4")">Approver 4</MudSelectItem>
+                </MudSelect>
+                <MudDatePicker Class="my-4"Label="Date" @bind-Date="date" />
+                <MudTextField Class="my-3"@bind-Value="TotalAmount" Label="Total Amount" Variant="Variant.Outlined" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.AttachMoney" AdornmentColor="Color.Warning" />
+                <MudTextField Class="my-3"T="string" Label="Comment" Variant="Variant.Outlined" Text="asdkljf lkasjdf ;laskdjf a;slkdfj asdf" Lines="5" />
+
+                @*<MudTextField T="string" Label="Password" HelperText="Choose a strong password" @ref="pwField1"
+                                  InputType="InputType.Password"
+                                  Validation="@(new Func<string, IEnumerable<string>>(PasswordStrength))" Required="true"
+                                  RequiredError="Password is required!" />
+                    <MudTextField T="string"
+                                  Label="Password" HelperText="Repeat the password" InputType="InputType.Password"
+                                  Validation="@(new Func<string, string>(PasswordMatch))" />*@
+            </MudForm>
+
+            <div Class="d-flex flex-row my-3 justify-space-between align-center">
+                <MudText Typo="Typo.h5">Claim Items</MudText>
+                <MudButton 
+                    @onclick="() => handleAddItemButtonClick()"
+                   Variant="Variant.Filled" 
+                   Color="Color.Secondary" 
+                   Class="mx-2">Add</MudButton>
+            </div>
+
+            <MudTable Class="my-3" Items="@ClaimItems" Hover="true" Breakpoint="Breakpoint.Sm">
+                <HeaderContent>
+                    <MudTh>Payee</MudTh>
+                    <MudTh>Date</MudTh>
+                    <MudTh>Description</MudTh>
+                    <MudTh>Amount</MudTh>
+                    <MudTh>USDAmount</MudTh>
+                    <MudTh>Image</MudTh>
+                    <MudTh>Category</MudTh>
+                    <MudTh></MudTh>
+                </HeaderContent>
+                <RowTemplate>
+                    <MudTd DataLabel="Payee">@context.Payee</MudTd>
+                    <MudTd DataLabel="Date">@context.Date</MudTd>
+                    <MudTd DataLabel="Description">@context.Description</MudTd>
+                    <MudTd DataLabel="Amount">@context.Amount</MudTd>
+                    <MudTd DataLabel="USDAmount">@context.USDAmount</MudTd>
+                    <MudTd DataLabel="Image"><MudAvatar Image=@context.Image /></MudTd>
+                    <MudTd DataLabel="Category">@context.ClaimCategoryId</MudTd>
+                    <MudTd DataLabel="">
+                        <MudMenu Label="Actions">
+                            <MudMenuItem @onclick="() => ClaimItems.Remove(context)">
+                                <MudIconButton @onclick="() => ClaimItems.Remove(context)" Size="Size.Small" Icon="@Icons.Material.Filled.Delete"></MudIconButton>Delete
+                            </MudMenuItem>
+                            <MudMenuItem @onclick="() => handleEditbuttonClick(context)">
+                                <MudIconButton @onclick="() => handleEditbuttonClick(context)" Size="Size.Small" Icon="@Icons.Material.Filled.Edit"></MudIconButton>Edit
+                            </MudMenuItem>
+                        </MudMenu>
+                    </MudTd>
+                </RowTemplate>
+            </MudTable>
+
+        </MudCardContent>
+        <MudCardActions>
+            <MudButton Variant="Variant.Filled" Color="Color.Primary" Disabled="@(!success)" Class="ml-auto">Submit</MudButton>
+        </MudCardActions>
+    </MudCard>
+
+    @*<MudPaper Class="pa-4 justify-center my-4 mud-text-align-center">
+        <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="@(()=>form.Validate())">Validate</MudButton>
+        <MudButton Variant="Variant.Filled" Color="Color.Secondary" OnClick="@(()=>form.Reset())" Class="mx-2">Reset</MudButton>
+        <MudButton Variant="Variant.Filled" OnClick="@(()=>form.ResetValidation())">Reset Validation</MudButton>
+    </MudPaper>*@
+
+    <MudExpansionPanels>
+        <MudExpansionPanel Text="@($"Show Errors ({errors.Length})")">
+            @foreach (var error in errors)
+            {
+                <MudText Color="@Color.Error">@error</MudText>
+            }
+        </MudExpansionPanel>
+    </MudExpansionPanels>
+</MudContainer>
+
+
+@code {
+    DateTime? date = DateTime.Today;
+    bool EditModalOpen { get; set; } = true;
+    CreateClaimCommandItemDto SelectedItem { get; set; }
+    public decimal? TotalAmount { get; set; }
+    public List<CreateClaimCommandItemDto> ClaimItems { get; set; } = new List<CreateClaimCommandItemDto>
+{
+        new CreateClaimCommandItemDto
+        {
+            Payee="Payee 1",
+            Date= DateTime.Now,
+            Description="ja;sdlkfj asdl;fkj sad;lfkj asdf",
+            Amount=10.99M,
+            Image="https://media.istockphoto.com/photos/the-setup-for-success-picture-id1165916723?k=6&m=1165916723&s=612x612&w=0&h=jk4D-OaGU9laTNFlLdPrYd-dJYuJPhKr1DVYixQ0N3s=",
+            CurrencyId=2,
+            ClaimCategoryId=1,
+        },
+        new CreateClaimCommandItemDto
+        {
+            Payee="Payee 2",
+            Date= DateTime.Now,
+            Description="ja;sdlkfj asdl;fkj sad;lfkj asdf",
+            Amount=110.99M,
+            USDAmount=1.3M * 110.99M,
+            Image="https://www.ikea.com/ca/en/images/products/markus-office-chair-vissle-dark-gray__0854850_PE563377_S5.JPG?f=s",
+            CurrencyId=2,
+            ClaimCategoryId=3,
+        }
+    };
+
+    bool success;
+    string[] errors = { };
+    MudTextField<string> pwField1;
+    MudForm form;
+
+
+    private IEnumerable<string> PasswordStrength(string pw)
+    {
+        if (string.IsNullOrWhiteSpace(pw))
+        {
+            yield return "Password is required!";
+            yield break;
+        }
+        if (pw.Length < 8)
+            yield return "Password must be at least of length 8";
+        if (!Regex.IsMatch(pw, @"[A-Z]"))
+            yield return "Password must contain at least one capital letter";
+        if (!Regex.IsMatch(pw, @"[a-z]"))
+            yield return "Password must contain at least one lowercase letter";
+        if (!Regex.IsMatch(pw, @"[0-9]"))
+            yield return "Password must contain at least one digit";
+    }
+
+    private string PasswordMatch(string arg)
+    {
+        if (pwField1.Value != arg)
+            return "Passwords don't match";
+        return null;
+    }
+
+    private decimal calculateUSDAmount(int currencyId, decimal amount)
+    {
+        decimal result = 0.0M;
+        switch (currencyId)
+        {
+            case 1:
+                result = amount * 0.001M;
+                break;
+            case 2:
+                result = amount * 1.3M;
+                break;
+        }
+        return result;
+    }
+
+    private void handleEditbuttonClick(CreateClaimCommandItemDto item)
+    {
+        var parameters = new DialogParameters();
+        parameters.Add("ClaimItem", item);
+
+        var options = new DialogOptions() { CloseButton = true, MaxWidth = MaxWidth.Small };
+
+        DialogService.Show<EditModal>("Edit Button on Create Claim", parameters, options);
+    }
+
+    private void handleAddItemButtonClick()
+    {
+
+        //var options = new DialogOptions() { CloseButton = true, MaxWidth = MaxWidth.Small };
+
+        DialogService.Show<AddModal>("Add Button on Create Claim");
+    }
+}
