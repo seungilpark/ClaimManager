@@ -6,6 +6,7 @@
   <PropertyGroup>
     <DocumentationFile>ClaimManager.Api.xml</DocumentationFile>
     <NoWarn>1701;1702;1591</NoWarn>
+    <UserSecretsId>2789f2e8-31a7-4b32-ace4-ce0ad3667c5d</UserSecretsId>
     </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="AspNetCoreHero.Extensions.Logging" Version="1.0.0" />
