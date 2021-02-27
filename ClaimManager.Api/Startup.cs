@@ -31,6 +31,16 @@ namespace ClaimManager.Api
             services.AddSharedInfrastructure(_configuration);
             services.AddEssentials();
             services.AddControllers();
+            services.AddCors(options =>
+            {
+                options.AddPolicy(name: "BlazorPolicy",
+                    builder =>
+                    {
+                        builder.AllowAnyOrigin()
+                        .AllowAnyMethod();
+                        // builder.WithOrigins("domain1", "domain2",...).WithMethod("GET",""...);
+                    });
+            });
             services.AddMvc(o =>
             {
                 //var policy = new AuthorizationPolicyBuilder()
@@ -51,6 +61,7 @@ namespace ClaimManager.Api
             app.UseHttpsRedirection();
             app.UseMiddleware<ErrorHandlerMiddleware>();
             app.UseRouting();
+            app.UseCors("BlazorPolicy");
             app.UseAuthentication();
             app.UseAuthorization();
 
